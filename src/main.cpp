@@ -1,25 +1,31 @@
 #include <iostream>
 
 std::string encryptCaesar(std::string str, int value){
-    for(int i = 0; i < str.length(); i++){
-        // if(str[i] < 'a' && str[i] > 'z'){
-            if ((str[i] += value) > 'z') str[i] -= 'z'-'a';
-        // }else{
-        //     str = "ERROR Cipher";
-        // }  
+  int newchar;
+  for (int i = 0; i < str.length(); ++i) {
+    switch (str[i]) {
+      case 65 ... 90:
+        if ((str[i] - 'A' + value) >= 0)
+          newchar = (str[i] - 'A' + value) % 26 + 'A';
+        else
+          newchar = (str[i] - 'A' + value) % 26 + 'Z' + 1;
+        break;
+      case 97 ... 122:
+        if ((str[i] - 'a' + value) >= 0)
+          newchar = (str[i] - 'a' + value) % 26 + 'a';
+        else
+          newchar = (str[i] - 'a' + value) % 26 + 'z' + 1;
+        break;
+      default:
+        newchar = str[i];
     }
-    return str;
+    str[i] = newchar;
+  }
+  return str;
 }
 
 std::string decryptCaesar(std::string str, int value){
-    for(int i = 0; i < str.length(); i++){
-        // if(str[i] < 'a' && str[i] > 'z'){
-            if ((str[i] -= value) < 'a') str[i] += 'z'-'a';
-        // }else{
-        //     str = "ERROR Decryption";
-        // }
-    }
-    return str;
+    return (encryptCaesar(str, -value));
 } 
 
 int main(){
